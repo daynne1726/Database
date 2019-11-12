@@ -6,6 +6,15 @@
 
 package mixed;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.PopupMenu;
+import java.awt.Toolkit;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.Timer;
+import java.util.TimerTask;
+
 /**
  *
  * @author caballeroda_sd2081
@@ -16,12 +25,22 @@ public class SCCC extends javax.swing.JFrame {
     static int mint = 0;
     static int hours = 0;
     
+   
+    private PopupMenu clock;
+   
+    int counter = 100;
+    Boolean isIt = false;
+    Boolean st = false;
+    private int counting;
     static boolean state = true;
     /**
      * Creates new form SCCC
      */
     public SCCC() {
         initComponents();
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        this.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
+        clock();
     }
 
     /**
@@ -36,6 +55,7 @@ public class SCCC extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
+        timestamp = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
@@ -47,12 +67,12 @@ public class SCCC extends javax.swing.JFrame {
         stop = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        count = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
         jTextField1 = new javax.swing.JTextField();
         jPanel6 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
+        timeleft = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
         jTextField2 = new javax.swing.JTextField();
 
@@ -63,21 +83,31 @@ public class SCCC extends javax.swing.JFrame {
         jLabel5.setFont(new java.awt.Font("Lucida Sans Typewriter", 0, 18)); // NOI18N
         jLabel5.setText("CURRENT TIME");
 
+        timestamp.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        timestamp.setForeground(new java.awt.Color(255, 102, 204));
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(119, 119, 119)
-                .addComponent(jLabel5)
-                .addContainerGap(131, Short.MAX_VALUE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(119, 119, 119)
+                        .addComponent(jLabel5))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(70, 70, 70)
+                        .addComponent(timestamp, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(94, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(246, Short.MAX_VALUE))
+                .addGap(43, 43, 43)
+                .addComponent(timestamp, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(114, Short.MAX_VALUE))
         );
 
         jPanel3.setBackground(new java.awt.Color(153, 153, 255));
@@ -191,16 +221,21 @@ public class SCCC extends javax.swing.JFrame {
         jPanel5.setBackground(new java.awt.Color(255, 153, 153));
 
         jLabel6.setFont(new java.awt.Font("Lucida Sans Typewriter", 0, 18)); // NOI18N
-        jLabel6.setText("COUNT UP");
+        jLabel6.setText("COUNTUP");
 
-        jLabel2.setBackground(new java.awt.Color(0, 204, 204));
-        jLabel2.setFont(new java.awt.Font("Times New Roman", 0, 48)); // NOI18N
-        jLabel2.setText("100");
+        count.setBackground(new java.awt.Color(0, 204, 204));
+        count.setFont(new java.awt.Font("Times New Roman", 0, 48)); // NOI18N
+        count.setText("100");
 
         jButton3.setBackground(new java.awt.Color(0, 0, 0));
         jButton3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jButton3.setForeground(new java.awt.Color(255, 153, 153));
         jButton3.setText("GO");
+        jButton3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton3MouseClicked(evt);
+            }
+        });
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -227,7 +262,7 @@ public class SCCC extends javax.swing.JFrame {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addGap(144, 144, 144)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(count, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -237,7 +272,7 @@ public class SCCC extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(count, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, 48, Short.MAX_VALUE)
@@ -248,16 +283,21 @@ public class SCCC extends javax.swing.JFrame {
         jPanel6.setBackground(new java.awt.Color(102, 204, 255));
 
         jLabel7.setFont(new java.awt.Font("Lucida Sans Typewriter", 0, 18)); // NOI18N
-        jLabel7.setText("COUNT DOWN");
+        jLabel7.setText("COUNTDOWN");
 
-        jLabel1.setBackground(new java.awt.Color(0, 204, 204));
-        jLabel1.setFont(new java.awt.Font("Times New Roman", 0, 48)); // NOI18N
-        jLabel1.setText("100");
+        timeleft.setBackground(new java.awt.Color(0, 204, 204));
+        timeleft.setFont(new java.awt.Font("Times New Roman", 0, 48)); // NOI18N
+        timeleft.setText("100");
 
         jButton2.setBackground(new java.awt.Color(0, 0, 0));
         jButton2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jButton2.setForeground(new java.awt.Color(51, 204, 255));
         jButton2.setText("GO");
+        jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton2MouseClicked(evt);
+            }
+        });
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -276,13 +316,8 @@ public class SCCC extends javax.swing.JFrame {
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGap(132, 132, 132)
-                        .addComponent(jLabel7))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGap(152, 152, 152)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(132, 132, 132)
+                .addComponent(jLabel7)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                 .addGap(41, 41, 41)
@@ -290,6 +325,10 @@ public class SCCC extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(25, 25, 25))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(timeleft, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(141, 141, 141))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -297,7 +336,7 @@ public class SCCC extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(timeleft, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 65, Short.MAX_VALUE)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -433,6 +472,81 @@ public class SCCC extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField2ActionPerformed
 
+    private void jButton3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseClicked
+        Timer timex = new Timer(); //new timer
+        counting = 0; //setting the counter to 0
+        TimerTask tasking = new TimerTask() {        
+            public void run() {
+                counting++;
+                count.setText(Integer.toString(counting)); //the timer lable to counter.
+                while(counting == 100){
+                    jPanel5.setBackground(Color.GREEN);
+                    jPanel5.setBackground(Color.BLUE);
+                    jPanel5.setBackground(Color.MAGENTA);
+                    jPanel5.setBackground(Color.RED);
+                    jPanel5.setBackground(Color.ORANGE);
+                    jPanel5.setBackground(Color.PINK);
+                }
+            };
+        };
+    timex.scheduleAtFixedRate(tasking, 100, 100);
+    }//GEN-LAST:event_jButton3MouseClicked
+
+    private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
+        Timer timer = new Timer(); //new timer
+        counter = 100; //setting the counter to 10 sec
+        TimerTask task = new TimerTask() {        
+            public void run() {                
+                timeleft.setText(Integer.toString(counter)); //the timer lable to counter.
+                counter --;
+                if (counter == -1){
+                    timer.cancel();                                      
+                }
+                while(counter == -1){
+//                    jPanel6.setBackground(Color.GREEN);
+                    jPanel6.setBackground(Color.BLACK);
+                    jPanel6.setBackground(Color.MAGENTA);
+                    jPanel6.setBackground(Color.RED);
+//                    jPanel6.setBackground(Color.);
+                    jPanel6.setBackground(Color.PINK);
+                }
+            }
+        };
+    timer.scheduleAtFixedRate(task, 100, 100);
+    }//GEN-LAST:event_jButton2MouseClicked
+
+    public void clock(){
+        Thread th = new Thread(){
+            public void run(){
+                try{
+                    for(;;){
+                        Calendar c = new GregorianCalendar();
+                        int day = c.get(Calendar.DAY_OF_MONTH);
+                        int month = c.get(Calendar.MONTH);
+                        int year = c.get(Calendar.YEAR);
+                       
+                        int second = c.get(Calendar.SECOND);
+                        int min = c.get(Calendar.MINUTE);
+                        int hour = c.get(Calendar.HOUR);
+                        int am_pm = c.get(Calendar.AM_PM);
+                       
+                        String d_n = "";
+                        if(am_pm == 1)
+                            d_n = "PM";
+                        else
+                            d_n = "AM";
+                        timestamp.setText(" " + hour + ":" + min + ":" + second + " " + d_n + " " + day + "/" + month + "/" + year + " ");
+                        sleep(1000);
+                    }
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        };
+        th.start();
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -469,11 +583,10 @@ public class SCCC extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel count;
     private javax.swing.JLabel hr;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -491,5 +604,7 @@ public class SCCC extends javax.swing.JFrame {
     private javax.swing.JLabel sec;
     private javax.swing.JButton start;
     private javax.swing.JButton stop;
+    private javax.swing.JLabel timeleft;
+    private javax.swing.JLabel timestamp;
     // End of variables declaration//GEN-END:variables
 }

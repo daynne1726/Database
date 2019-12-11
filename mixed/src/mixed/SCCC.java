@@ -96,18 +96,18 @@ public class SCCC extends javax.swing.JFrame {
                         .addGap(119, 119, 119)
                         .addComponent(jLabel5))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(70, 70, 70)
-                        .addComponent(timestamp, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(94, Short.MAX_VALUE))
+                        .addGap(127, 127, 127)
+                        .addComponent(timestamp, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(131, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(43, 43, 43)
+                .addGap(50, 50, 50)
                 .addComponent(timestamp, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(114, Short.MAX_VALUE))
+                .addContainerGap(107, Short.MAX_VALUE))
         );
 
         jPanel3.setBackground(new java.awt.Color(153, 153, 255));
@@ -521,9 +521,9 @@ public class SCCC extends javax.swing.JFrame {
                 try{
                     for(;;){
                         Calendar c = new GregorianCalendar();
-                        int day = c.get(Calendar.DAY_OF_MONTH);
-                        int month = c.get(Calendar.MONTH);
-                        int year = c.get(Calendar.YEAR);
+//                        int day = c.get(Calendar.DAY_OF_MONTH);
+//                        int month = c.get(Calendar.MONTH);
+//                        int year = c.get(Calendar.YEAR);
                        
                         int second = c.get(Calendar.SECOND);
                         int min = c.get(Calendar.MINUTE);
@@ -535,7 +535,7 @@ public class SCCC extends javax.swing.JFrame {
                             d_n = "PM";
                         else
                             d_n = "AM";
-                        timestamp.setText(" " + hour + ":" + min + ":" + second + " " + d_n + " " + day + "/" + month + "/" + year + " ");
+                        timestamp.setText(" " + hour + ":" + min + ":" + second + " " + d_n + " ");
                         sleep(1000);
                     }
                 }
